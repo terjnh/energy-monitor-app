@@ -27,6 +27,7 @@ export default function UserDevicePage({ device }) {
 
     const [isLoading, setIsLoading] = useState(false);
     const nameRef = useRef();
+    const energyRef = useRef();
 
     const router = useRouter();
 
@@ -53,7 +54,8 @@ export default function UserDevicePage({ device }) {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         _id: device._id,
-                        name: nameRef.current.value
+                        name: nameRef.current.value,
+                        energy: parseInt(energyRef.current.value),
                     }),
                 });
                 mutate({ user: response.user }, false);
@@ -128,6 +130,8 @@ export default function UserDevicePage({ device }) {
                     <form onSubmit={onSubmit}>
                         <Spacer size={0.5} axis="vertical" />
                         <Input ref={nameRef} label="Device name" />
+                        <Spacer size={0.5} axis="vertical" />
+                        <Input ref={energyRef} label="Add Energy (Watts)" />
                         <Spacer size={0.5} axis="vertical" />
                         <button className={styles.submitbutton}
                             htmlType="submit"

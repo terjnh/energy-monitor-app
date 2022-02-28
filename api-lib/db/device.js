@@ -26,13 +26,17 @@ export async function findDeviceById(db, id) {
 }
 
 export async function updateDeviceById(db, id, data) {
+  console.log('updateDeviceById-data:', data.energy)
   return db
     .collection(DEVICES)
-    .updateOne(
+    .updateMany(
       { _id: ObjectId(id) },
-      { $set: data },
+      {
+        $push: { energyConsumption: data.energy },
+        $set: data
+      },
     )
-    // .then(({ value }) => value);
+  // .then(({ value }) => value);
 }
 
 
@@ -67,6 +71,7 @@ export async function insertDevice(db, { name, creatorId }) {
   const device = {
     name,
     creatorId,
+    energyConsumption: [],
     createdAt: new Date(),
   };
   const { insertedId } = await db.collection('devices').insertOne(device);

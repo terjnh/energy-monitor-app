@@ -13,7 +13,8 @@ handler.patch(
     validateBody({
         type: 'object',
         properties: {
-            content: ValidateDeviceProps.device.name,
+            name: ValidateDeviceProps.device.name,
+            energy: ValidateDeviceProps.device.energy
         },
         additionalProperties: true,
     }),
@@ -24,9 +25,11 @@ handler.patch(
             return;
         }
 
-        const { name, _id } = req.body;
+        const { name, energy, _id } = req.body;
+        console.log('req.body:::', req.body)
         const updateData = {
-            "name": name
+            "name": name,
+            "energy": energy, 
         }
 
         const device = await updateDeviceById(req.db, _id, updateData);

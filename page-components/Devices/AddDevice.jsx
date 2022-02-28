@@ -27,7 +27,9 @@ const PostDeviceInner = ({ user }) => {
                 await fetcher('/api/devices', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name: nameRef.current.value }),
+                    body: JSON.stringify({ 
+                        name: nameRef.current.value 
+                    }),
                 });
                 toast.success('New device added');
                 nameRef.current.value = '';
@@ -65,7 +67,6 @@ const PostDevice = () => {
     const loading = !data && !error;
 
     // if user is null, disallow adding of new device
-    console.log('data:', data);
 
     return (
         <Wrapper>

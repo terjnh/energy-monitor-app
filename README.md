@@ -1,6 +1,9 @@
 ### Update:
 - 28-02-2022
     - Summary Page
+    - Device -> MongoDB key: 
+        - energyConsumption Array -> stores all energy values
+        - energy -> most recent addition of energy value
 
 ## Dependencies
 - `ajv` - validates request body (JSON)

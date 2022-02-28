@@ -1,6 +1,11 @@
-import { Wrapper } from '@/components/Layout';
+import { Wrapper, Spacer } from '@/components/Layout';
 import React from 'react';
-import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
+import {
+    CartesianGrid, Legend,
+    Line, LineChart,
+    Tooltip, XAxis, YAxis
+} from 'recharts';
+import { Center, Text } from '@chakra-ui/react';
 import styles from './Chart.module.css';
 
 export const Chart = () => {
@@ -50,18 +55,21 @@ export const Chart = () => {
     ];
 
     return (
-        
-            <Wrapper>
-                <div className={styles.root}>
-                    <br/>
+        <Wrapper>
+            <div className={styles.root}>
+            <Spacer size={1} axis="vertical" />
+                <Center w='1125px'>
+                    <Text color="secondary"><b>Mock Summary Chart</b></Text>
+                </Center>
+                <Spacer size={0.2} axis="vertical" />
                 <LineChart
-                    width={600}
+                    width={800}
                     height={300}
                     data={data}
                     margin={{
                         top: 5,
-                        right: 30,
-                        left: 150,
+                        right: 10,
+                        left: 300,
                         bottom: 5,
                     }}
                 >
@@ -73,8 +81,9 @@ export const Chart = () => {
                     <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
                     <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
                 </LineChart>
-                </div>
-                </Wrapper>
+
+            </div>
+        </Wrapper>
 
     )
 };
