@@ -1,0 +1,8 @@
+.root {
+  min-height: calc(100vh);
+}
+
+.header1 {
+  margin-top: 50px;
+  text-align: center;
+}

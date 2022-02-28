@@ -1,0 +1,12 @@
+.root {
+  background: var(--background);
+  padding: 32px;
+  box-shadow: var(--shadow-smallest);
+  border-radius: 8px;
+  height: 500px;
+  transition: ease 0.2s box-shadow;
+}
+
+.root:hover {
+  box-shadow: var(--shadow-medium);
+}

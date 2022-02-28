@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  min-width: 1px;
+  max-width: 100%;
+}
+
+.container_vert {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-width: 1px;
+  max-width: 100%;
+}
+
+.column {
+  flex-direction: column;
+}
