@@ -139,6 +139,8 @@ const AboutYou = ({ user, mutate }) => {
         if (profilePictureRef.current.files[0]) {
           formData.append('profilePicture', profilePictureRef.current.files[0]);
         }
+        console.log('Settings-formData:', formData.get('profilePicture'))
+
         const response = await fetcher('/api/user', {
           method: 'PATCH',
           body: formData,

@@ -44,12 +44,12 @@ handler.patch(
     additionalProperties: true,
   }),
   async (req, res) => {
-    
     if (!req.user) {
       req.status(401).end();
       return;
     }
     let profilePicture;
+    console.log('/api/user--req.file:', req.file)
     if (req.file) {
       const image = await cloudinary.uploader.upload(req.file.path, {
         width: 512,
@@ -58,6 +58,7 @@ handler.patch(
       });
       profilePicture = image.secure_url;
     }
+    console.log('/api/user--req.body:', req.body)
     const { name, bio, company } = req.body;
 
     let username;

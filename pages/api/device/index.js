@@ -1,15 +1,37 @@
 import { ValidateDeviceProps } from "@/api-lib/constants";
 import { updateDeviceById } from "@/api-lib/db";
-import { ncOpts } from '@/api-lib/nc';
 import { auths, database, validateBody } from '@/api-lib/middlewares';
+import { ncOpts } from '@/api-lib/nc';
 import { v2 as cloudinary } from 'cloudinary';
 import multer from 'multer';
 import nc from 'next-connect';
 
+const upload = multer({ dest: '/tmp' });
 const handler = nc(ncOpts);
+
+if (process.env.CLOUDINARY_URL) {
+    const {
+        hostname: cloud_name,
+        username: api_key,
+        password: api_secret,
+    } = new URL(process.env.CLOUDINARY_URL);
+
+    cloudinary.config({
+        cloud_name,
+        api_key,
+        api_secret,
+    });
+}
+
 handler.use(database, ...auths);
 
+handler.get(async (req, res) => {
+    if (!req.user) return res.json({ user: null });
+    return res.json({ user: req.user });
+});
+
 handler.patch(
+    upload.single('photo'),
     validateBody({
         type: 'object',
         properties: {
@@ -19,26 +41,43 @@ handler.patch(
         additionalProperties: true,
     }),
     async (req, res) => {
-        console.log("Device patch user:", req.user)
         if (!req.user) {
             req.status(401).end();
             return;
         }
-
-        const { name, energy, _id } = req.body;
-        console.log('req.body:::', req.body)
-        const updateData = {
-            "name": name,
-            "energy": energy, 
+        let photo;
+        console.log('/api/device--req.file:', req.file)
+        if (req.file) {
+            const image = await cloudinary.uploader.upload(req.file.path, {
+                width: 512,
+                height: 512,
+                crop: 'fill',
+            });
+            photo = image.secure_url;
         }
 
-        const device = await updateDeviceById(req.db, _id, updateData);
+        console.log('/api/device--req.body:', req.body)
+        const { name, energy, _id } = req.body;
+        const updateData = {
+            "name": name,
+            "energy": energy,
+            "photo": photo
+        }
+
+        const device = await updateDeviceById(req.db, _id, {
+            ...(name && { name }),
+            ...(energy && { energy }),
+            ...(photo && { photo })
+        });
 
         res.json({ device })
     }
+);
 
-)
-
-
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
 export default handler;

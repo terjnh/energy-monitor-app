@@ -1,5 +1,5 @@
 import { Device } from '@/components/Device';
-import { Container, Spacer } from '@/components/Layout';
+import { Spacer } from '@/components/Layout';
 import Wrapper from '@/components/Layout/Wrapper';
 import { usePostDevice } from '@/lib/device';
 import Link from 'next/link';
@@ -11,6 +11,8 @@ const DeviceList = () => {
     const devices = data
         ? data.reduce((acc, val) => [...acc, ...val.devices], [])
         : [];
+
+        console.log("DeviceList---devices:", devices)
 
     return (
         <div className={styles.root}>

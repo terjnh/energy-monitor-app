@@ -18,7 +18,7 @@ export const ValidateProps = {
 export const ValidateDeviceProps = {
   device: {
     name: { type: 'string', minLength: 2, maxLength: 20 },
-    energy: { type: 'number', minLength: 1, maxLength: 3 }
+    energy: { type: 'string', minLength: 0, maxLength: 3 }
   }
 }
 

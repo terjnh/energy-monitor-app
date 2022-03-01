@@ -1,24 +1,25 @@
 import { findDeviceById } from "@/api-lib/db";
+import nc from 'next-connect';
 import { database } from '@/api-lib/middlewares';
-import { Input } from '@/components/Input';
-import { Spacer } from '@/components/Layout';
 import { fetcher } from "@/lib/fetch";
 import { useCurrentUser } from '@/lib/user';
-import nc from 'next-connect';
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useRef, useState } from "react";
-import styles from "../../../../page-components/Devices/DeviceList.module.css"
-import toast from "react-hot-toast";
-// MUI
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
+
+import { Avatar } from '@/components/Avatar';
+import { Input } from '@/components/Input';
+import { Spacer } from '@/components/Layout';
 // Chakra
 import {
-    AspectRatio, Avatar,
-    Box, Button, Center, Flex, FormLabel,
-    Heading, Image, Stack, styled, StylesProvider,
-    Text
+    AspectRatio,
+    Box, Center, Flex, Heading, Image, Stack, Text
 } from '@chakra-ui/react';
+import FormControlLabel from '@mui/material/FormControlLabel';
+// MUI
+import Switch from '@mui/material/Switch';
+
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
+import styles from "../../../../page-components/Devices/DeviceList.module.css";
 
 
 export default function UserDevicePage({ device }) {
@@ -26,8 +27,10 @@ export default function UserDevicePage({ device }) {
     const { data, error, mutate } = useCurrentUser();
 
     const [isLoading, setIsLoading] = useState(false);
+    const [avatarHref, setAvatarHref] = useState(device.photo);
     const nameRef = useRef();
     const energyRef = useRef();
+    const devicePictureRef = useRef();
 
     const router = useRouter();
 
@@ -38,25 +41,38 @@ export default function UserDevicePage({ device }) {
     };
 
     useEffect(() => {
-        nameRef.current.value = device.name
-    }, [])
+        nameRef.current.value = device.name;
+        devicePictureRef.current.value = '';
+        setAvatarHref(device.photo)
+    }, [device])
+
+    const onDevicePictureChange = useCallback((e) => {
+        const file = e.currentTarget.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (l) => {
+            setAvatarHref(l.currentTarget.result);
+        };
+        reader.readAsDataURL(file);
+    })
 
     const onSubmit = useCallback(
         async (e) => {
             e.preventDefault();
-
             try {
                 setIsLoading(true);
-                // const formData = new FormData();
-                // formData.append('name', nameRef.current.value);
+                const formData = new FormData();
+                formData.append('_id', device._id);
+                formData.append('name', nameRef.current.value);
+                formData.append('energy', energyRef.current.value);
+                if (devicePictureRef.current.files[0]) {
+                    formData.append('photo', devicePictureRef.current.files[0])
+                }
+                console.log('Device-formData:', formData.get('photo'))
+
                 const response = await fetcher('/api/device', {
                     method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        _id: device._id,
-                        name: nameRef.current.value,
-                        energy: parseInt(energyRef.current.value),
-                    }),
+                    body: formData,
                 });
                 mutate({ user: response.user }, false);
                 toast.success('The device has been updated');
@@ -86,8 +102,8 @@ export default function UserDevicePage({ device }) {
                             control={
                                 <Switch checked={switchState} onChange={handleChange} name="switch" />
                             }
-                            label={switchState ? 
-                            <b>Switch OFF</b> : <b>Switch ON</b>}
+                            label={switchState ?
+                                <b>Switch OFF</b> : <b>Switch ON</b>}
                         /></Flex>
                     </Box>
 
@@ -107,27 +123,32 @@ export default function UserDevicePage({ device }) {
                             }
                             objectFit={'cover'}
                         /></AspectRatio>
-                    <Flex justify={'center'} mt={-80}>
-                        <Avatar
-                            boxSize='180px'
-                            size={'xl'}
-                            opacity='0.9'
-                            src={'https://images.unsplash.com/photo-1529310399831-ed472b81d589?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80'}
-                            alt={'Device'}
-                            css={{
-                                border: '1px solid gray',
-                            }}
-                        />
-                    </Flex>
-
-                    <Box p={6}>
-                        <Stack spacing={-10} align={'center'} mb={1}>
-                            <Text color={'gray.500'}>Added by: <b>{device.creator.username}</b></Text>
-                            <Text color={'gray.500'}>from <b>{device.creator.company}</b></Text>
-                        </Stack>
-                    </Box>
 
                     <form onSubmit={onSubmit}>
+                        <Flex justify={'center'} mt={-60} ml={-52}>
+                            <Spacer size={0.5} axis="vertical" />
+                            <div className={styles.avatar}>
+                                <Avatar
+                                    size={150}
+                                    url={avatarHref ? avatarHref : '/images/addImage.png'}
+                                />
+                                <input
+                                    aria-label="Device Avatar"
+                                    type="file"
+                                    accept="image/*"
+                                    ref={devicePictureRef}
+                                    onChange={onDevicePictureChange}
+                                />
+                            </div>
+                        </Flex>
+                        <Spacer size={2} axis="vertical" />
+                        <Box p={6}>
+                            <Stack spacing={-10} align={'center'} mb={1}>
+                                <Text color={'gray.500'}>Added by: <b>{device.creator.username}</b></Text>
+                                <Text color={'gray.500'}>from <b>{device.creator.company}</b></Text>
+                            </Stack>
+                        </Box>
+
                         <Spacer size={0.5} axis="vertical" />
                         <Input ref={nameRef} label="Device name" />
                         <Spacer size={0.5} axis="vertical" />
@@ -154,7 +175,6 @@ export async function getServerSideProps(context) {
     await nc().use(database).run(context.req, context.res);
 
     const device = await findDeviceById(context.req.db, context.params.deviceId);
-    console.log("DeViCe:", device)
     if (!device) {
         return {
             notFound: true,

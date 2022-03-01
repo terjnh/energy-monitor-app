@@ -26,17 +26,17 @@ export async function findDeviceById(db, id) {
 }
 
 export async function updateDeviceById(db, id, data) {
-  console.log('updateDeviceById-data:', data.energy)
   return db
     .collection(DEVICES)
-    .updateMany(
-      { _id: ObjectId(id) },
+    .findOneAndUpdate(
+      { "_id": ObjectId(id) },
       {
-        $push: { energyConsumption: data.energy },
-        $set: data
+        $set: data,
+        $push: { energyConsumption: (data.energy ? data.energy : "0") },
       },
+      { returnDocument: 'after' }
     )
-  // .then(({ value }) => value);
+    // .then(({ value }) => value);
 }
 
 

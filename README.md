@@ -1,9 +1,9 @@
 ### Update:
-- 28-02-2022
-    - Summary Page
-    - Device -> MongoDB key: 
-        - energyConsumption Array -> stores all energy values
-        - energy -> most recent addition of energy value
+- 01-03-2022
+    - `/api/device`, sent PATCH body using FormData()
+        - Added handler.get in `/api/device`
+    - Summary Page:
+        - Graph updates with data modification in MongoDB
 
 ## Dependencies
 - `ajv` - validates request body (JSON)

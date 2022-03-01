@@ -1,7 +1,9 @@
+import { Flex } from '@chakra-ui/react';
 import styles from './Avatar.module.css';
 
 const Avatar = ({ size, username, url }) => {
   return (
+    <>
     <img
       className={styles.avatar}
       src={url || '/images/default_user.jpg'}
@@ -9,6 +11,7 @@ const Avatar = ({ size, username, url }) => {
       width={size}
       height={size}
     />
+    </>
   );
 };
 
