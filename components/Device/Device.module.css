@@ -1,65 +1,104 @@
 .root {
-    position: relative;
-    box-sizing: border-box;
-    padding: 16px;
-    background: var(--background);
-    border: 1px solid var(--accents-2);
-    border-radius: 5px;
-    box-shadow: var(--shadow-smallest);
-  }
-  
-  .root a {
-    text-decoration: none;
-  }
-  
-  .creator {
-    display: inline-flex;
-  }
-  
-  .meta {
-    margin-left: 8px;
-  }
-  
-  .meta:hover .name,
-  .meta:focus .name {
-    text-decoration: underline;
-  }
-  
-  .name {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--foreground);
-    margin: 0;
-    line-height: 20px;
-  }
-  
-  .username {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--primary);
-    margin: 0;
-    line-height: 20px;
-  }
-  
-  .wrap {
-    margin-top: 16px;
-  }
-  
-  .content {
-    color: var(--accents-6);
-    font-weight: 500;
-    font-size: 0.875rem;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-  
-  .timestamp {
-    font-size: 0.65rem;
-    font-weight: 400;
-    line-height: 1.25rem;
-    margin: 0;
-    color: var(--accents-5);
-  }
-  
+  position: relative;
+  box-sizing: border-box;
+  padding: 16px;
+  background: var(--background);
+  border: 1px solid var(--accents-2);
+  border-radius: 5px;
+  box-shadow: var(--shadow-smallest);
+}
+
+.root a {
+  text-decoration: none;
+}
+
+.creator {
+  display: inline-flex;
+}
+
+.meta {
+  margin-left: 8px;
+}
+
+.meta:hover .name,
+.meta:focus .name {
+  text-decoration: underline;
+}
+
+.name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0;
+  line-height: 20px;
+}
+
+.username {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin: 0;
+  line-height: 20px;
+}
+
+.wrap {
+  margin-top: 16px;
+}
+
+.content {
+  color: var(--accents-6);
+  font-weight: 500;
+  font-size: 0.875rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.timestamp {
+  font-size: 0.65rem;
+  font-weight: 400;
+  line-height: 1.25rem;
+  margin: 0;
+  color: var(--accents-5);
+}
+
+.deletebtn {
+  display: inline-block;
+  padding: 0.5em 1.0em;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 0.4em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "Ubuntu", sans-serif;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #000000;
+  background-color: #ffa34d;
+  box-shadow: inset 0 -0.3em 0 -0.15em rgba(133, 133, 133, 0.17);
+  text-align: center;
+  position: relative;
+}
+.deletebtn:active {
+  top: 0.1em;
+}
+
+.editbtn {
+  display: inline-block;
+  padding: 0.5em 1.0em;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 0.4em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "Ubuntu", sans-serif;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #1d1d1d;
+  background-color: #cecece;
+  box-shadow: inset 0 -0.3em 0 -0.15em rgba(133, 133, 133, 0.17);
+  text-align: center;
+  position: relative;
+}
+.editbtn:active {
+  top: 0.1em;
+}

@@ -30,13 +30,10 @@ handler.post(
     additionalProperties: false,
   }),
   async (req, res) => {
-    console.log("posts-POST")
-
     if (!req.user) {
       return res.status(401).end();
     }
 
-    console.log("content:", req.body.content)
     const post = await insertPost(req.db, {
       content: req.body.content,
       creatorId: req.user._id,

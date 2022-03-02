@@ -36,7 +36,15 @@ export async function updateDeviceById(db, id, data) {
       },
       { returnDocument: 'after' }
     )
-    // .then(({ value }) => value);
+  // .then(({ value }) => value);
+}
+
+export async function deleteDeviceById(db, id) {
+  return db
+    .collection(DEVICES)
+    .findOneAndDelete(
+      { "_id": ObjectId(id) }
+    )
 }
 
 

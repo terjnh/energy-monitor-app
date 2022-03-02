@@ -1,9 +1,9 @@
 ### Update:
-- 01-03-2022
-    - `/api/device`, sent PATCH body using FormData()
-        - Added handler.get in `/api/device`
-    - Summary Page:
-        - Graph updates with data modification in MongoDB
+- 02-03-2022
+    - Render device energy chart upon update
+    - Chart is more dynamic (graph length depends on largest energyConsumption array)
+    - Energy consumption sum shown in Summary page
+    - Added Edit & Delete Buttons on Devices List [IN PROGRESS]
 
 ## Dependencies
 - `ajv` - validates request body (JSON)
@@ -20,9 +20,7 @@
 
 
 ### TODO:
-- When user selects a device from list-of-devices,
-  - redirect them to the appropriate (`/user/<user>/device/<deviceId>`)
-  - User should only be allowed to edit a device which they created?
+- Delete photo from Cloudinary if not in use
 
 ## Description
 Referenced from: https://github.com/hoangvvo/nextjs-mongodb-app

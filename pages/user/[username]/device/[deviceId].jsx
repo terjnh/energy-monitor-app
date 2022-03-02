@@ -68,7 +68,7 @@ export default function UserDevicePage({ device }) {
                 if (devicePictureRef.current.files[0]) {
                     formData.append('photo', devicePictureRef.current.files[0])
                 }
-                console.log('Device-formData:', formData.get('photo'))
+                // console.log('Device-formData:', formData.get('photo'))
 
                 const response = await fetcher('/api/device', {
                     method: 'PATCH',
@@ -76,7 +76,7 @@ export default function UserDevicePage({ device }) {
                 });
                 mutate({ user: response.user }, false);
                 toast.success('The device has been updated');
-                router.replace('/devices')
+                // router.replace('/devices')
             } catch (e) {
                 toast.error(e.message)
             } finally {
@@ -108,7 +108,7 @@ export default function UserDevicePage({ device }) {
                     </Box>
 
                     <Stack spacing={0} align={'center'} mb={5}>
-                        <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
+                        <Heading fontSize={'xl'} fontWeight={400} fontFamily={'body'}>
                             Selected Device:
                         </Heading>
                     </Stack>

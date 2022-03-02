@@ -3,10 +3,20 @@
   padding: 32px;
   box-shadow: var(--shadow-smallest);
   border-radius: 8px;
-  height: 500px;
+  /* height: 600px; */
+  min-height: calc(100vh);
   transition: ease 0.2s box-shadow;
 }
 
 .root:hover {
   box-shadow: var(--shadow-medium);
 }
+
+.fontXSmall {
+  font-size:x-small
+}
+
+.fontSmall {
+  font-size:small
+}
+

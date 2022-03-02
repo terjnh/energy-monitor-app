@@ -1,5 +1,5 @@
 import { ValidateDeviceProps } from "@/api-lib/constants";
-import { updateDeviceById } from "@/api-lib/db";
+import { deleteDeviceById, updateDeviceById } from "@/api-lib/db";
 import { auths, database, validateBody } from '@/api-lib/middlewares';
 import { ncOpts } from '@/api-lib/nc';
 import { v2 as cloudinary } from 'cloudinary';
@@ -30,6 +30,28 @@ handler.get(async (req, res) => {
     return res.json({ user: req.user });
 });
 
+handler.delete(
+    validateBody({
+        type: 'object',
+        properties: {
+            deviceId: ValidateDeviceProps.device.deviceId
+        },
+        additionalProperties: true,
+    }),
+    async (req, res) => {
+        console.log('req.body:', req.body)
+        // const { id } = req.body;
+        // console.log('req.db:', req.db)
+
+        // const device = await deleteDeviceById(req.db, id, {
+        //     id: id
+        // })
+
+        return res.json({ deleted: "true" })
+    }
+);
+
+
 handler.patch(
     upload.single('photo'),
     validateBody({
@@ -46,7 +68,6 @@ handler.patch(
             return;
         }
         let photo;
-        console.log('/api/device--req.file:', req.file)
         if (req.file) {
             const image = await cloudinary.uploader.upload(req.file.path, {
                 width: 512,
@@ -56,8 +77,9 @@ handler.patch(
             photo = image.secure_url;
         }
 
-        console.log('/api/device--req.body:', req.body)
         const { name, energy, _id } = req.body;
+        console.log('_id', _id)
+
         const updateData = {
             "name": name,
             "energy": energy,
