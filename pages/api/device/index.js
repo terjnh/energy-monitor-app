@@ -30,27 +30,12 @@ handler.get(async (req, res) => {
     return res.json({ user: req.user });
 });
 
-handler.delete(
-    validateBody({
-        type: 'object',
-        properties: {
-            deviceId: ValidateDeviceProps.device.deviceId
-        },
-        additionalProperties: true,
-    }),
-    async (req, res) => {
-        console.log('req.body:', req.body)
-        // const { id } = req.body;
-        // console.log('req.db:', req.db)
 
-        // const device = await deleteDeviceById(req.db, id, {
-        //     id: id
-        // })
-
-        return res.json({ deleted: "true" })
-    }
-);
-
+// handler.post(
+//     async (req, res) => {
+//         console.log('req.body: (post):', req.body)
+//     }
+// )
 
 handler.patch(
     upload.single('photo'),
@@ -63,6 +48,7 @@ handler.patch(
         additionalProperties: true,
     }),
     async (req, res) => {
+        console.log('req.body(patch):', req.body)
         if (!req.user) {
             req.status(401).end();
             return;

@@ -1,12 +1,12 @@
 import Ajv from 'ajv';
 
 export function validateBody(schema) {
-  console.log('schema:', schema)
+  // console.log('schema:', schema)
   const ajv = new Ajv();
   const validate = ajv.compile(schema);
   return (req, res, next) => {
     const valid = validate(req.body);
-    console.log('valid:', valid)
+    // console.log('valid:', valid)
     if (valid) {
       return next();
     } else {

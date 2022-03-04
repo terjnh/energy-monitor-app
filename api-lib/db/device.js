@@ -39,12 +39,14 @@ export async function updateDeviceById(db, id, data) {
   // .then(({ value }) => value);
 }
 
-export async function deleteDeviceById(db, id) {
+export async function deleteDeviceById(db, { deviceId }) {
+  console.log('deleteDeviceById, deviceId:', deviceId)
   return db
     .collection(DEVICES)
-    .findOneAndDelete(
-      { "_id": ObjectId(id) }
+    .deleteOne(
+      { "_id": ObjectId(deviceId), }
     )
+    .then(({value}) => value);
 }
 
 

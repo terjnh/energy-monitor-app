@@ -1,9 +1,8 @@
 ### Update:
-- 02-03-2022
-    - Render device energy chart upon update
-    - Chart is more dynamic (graph length depends on largest energyConsumption array)
-    - Energy consumption sum shown in Summary page
-    - Added Edit & Delete Buttons on Devices List [IN PROGRESS]
+- 04-03-2022
+    - Edit / Delete buttons styled by mui (/devices)
+    - Delete prompts a modal, for user to confirm
+    - handler.delete -> deleteById on MongoDB
 
 ## Dependencies
 - `ajv` - validates request body (JSON)
