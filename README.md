@@ -1,8 +1,6 @@
 ### Update:
 - 8 Mar 2022:
-    - Added S3 functionality -> /device-types
-        - Image upload and retrieval
-    - Added more items in .gitignore
+    - Beautified /device-types
 
 ## Dependencies
 - `ajv` - validates request body (JSON)
@@ -51,8 +49,7 @@ This example uses [`createPresignedPost`](https://docs.aws.amazon.com/AWSJavaScr
 
 ### TODO:
 - Delete photo from Cloudinary if not in use
-- Using Amazon S3 to handle files:
-    - https://next-s3-upload.codingvalue.com/setup#installation
+
 
 ## Description
 Referenced from: https://github.com/hoangvvo/nextjs-mongodb-app

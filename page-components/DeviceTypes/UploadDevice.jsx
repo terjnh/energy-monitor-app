@@ -1,18 +1,19 @@
-import { useEffect, useState } from 'react';
-import * as React from 'react';
+import { Spacer, Wrapper } from '@/components/Layout';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-
-import { Wrapper, Spacer } from '@/components/Layout';
 import Input from '@mui/material/Input';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import styles from './UploadDevice.module.css';
+
+import { useRouter } from 'next/router';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+
 
 const s3BucketUrl = "https://hellocdkstack-myfirstbucketb8884501-1teu86nqr4njm.s3.ap-southeast-1.amazonaws.com/"
 
@@ -42,7 +43,7 @@ const DeviceCard = (device) => {
                 // image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
                 alt={`${s3BucketUrl + selectedDevice.Key}`}
             />
-            <CardContent style={{backgroundColor: "gray"}}>
+            <CardContent style={{ backgroundColor: "gray" }}>
                 <Typography gutterBottom variant="h5" component="div">
                     {deviceName}
                 </Typography>
@@ -56,8 +57,7 @@ const DeviceCard = (device) => {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button variant="contained" size="small">Share</Button>
-                <Button size="small">Learn More</Button>
+                <Button variant="contained" size="small">ToDo</Button>
             </CardActions>
         </Card>
     );
@@ -65,6 +65,7 @@ const DeviceCard = (device) => {
 
 
 const UploadDevice = () => {
+    const router = useRouter();
 
     const [objUrl, setObjUrl] = useState('');
     const [imgFormData, setImgFormData] = useState(null);
@@ -109,7 +110,10 @@ const UploadDevice = () => {
         });
 
         if (upload.ok) {
+            // page refresh
+            router.reload(window.location.pathname)
             console.log('Uploaded successfully!');
+
         } else {
             console.error('Upload failed.');
         }
@@ -126,22 +130,32 @@ const UploadDevice = () => {
 
     return (
         <Wrapper>
-            <p>- Upload Device Space -</p>
-            <p>Upload a .png or .jpg image (max 1MB).</p>
-            <Input
+            <h3>Add a device photo</h3>
+            <p>This page contains a repository of the photos to use for the devices.</p>
+            <p className={styles.instructionText}>Upload a .png or .jpg image (max 1MB).</p>
+            <Input className={styles.fileSelectBtn}
                 type="file"
                 accept="image/png, image/jpeg"
                 onChange={uploadPhoto}
             />
-            <p>
-                File: {currentFileName}
-            </p>
-            <button
-                onClick={confirmUpload}
-            >Upload</button>
+            <Box className={styles.container}>
+                <p><b>File: {currentFileName}</b></p>
+                <Spacer size={18} axis="horizontal" />
+                <Button
+                    // style={{
+                    //     borderRadius: 12,
+                    //     backgroundColor: "#0045AB",
+                    //     padding: "12px 12px",
+                    //     fontSize: "16px"
+                    // }}
+                    size="small"
+                    variant="contained"
+                    onClick={confirmUpload}
+                >Upload</Button>
+            </Box>
 
             <Spacer size={2} axis="vertical" />
-            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 11 }}>
                 {devicesArray.map((device) => (
                     <div>
                         <Grid item xs={10}>
