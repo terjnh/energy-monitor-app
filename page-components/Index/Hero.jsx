@@ -25,12 +25,18 @@ const Hero = () => {
           </Container>
           <Spacer axis="vertical" size={1} />
           <Container>
+            <Link passHref href="/device-types">
+              <ButtonLink className={styles.button}>Device Types</ButtonLink>
+            </Link>
+          </Container>
+          <Spacer axis="vertical" size={1} />
+          <Container>
             <ButtonLink
-              href="https://www.google.com/"
+              href="https://github.com/terjnh"
               type="secondary"
               className={styles.button}
             >
-              Google
+              Github
             </ButtonLink>
           </Container>
         </ContainerVert>
