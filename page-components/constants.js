@@ -1,0 +1,1 @@
+export const S3_BUCKET_URL="https://hellocdkstack-myfirstbucketb8884501-1teu86nqr4njm.s3.ap-southeast-1.amazonaws.com/"

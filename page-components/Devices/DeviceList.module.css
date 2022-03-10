@@ -59,3 +59,24 @@
   z-index: 1;
   cursor: pointer;
 }
+
+.buttonStep {
+  width: 150px;
+  height: 150px;
+  background: url('/images/addImage.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 6px 3px 0 3px;
+  margin-top: 10px;
+  border-radius: 20px;
+}
+
+.rowDisplay {
+  display: flex;
+  flex-direction: row;
+}
+
+.columnDisplay {
+  display: flex;
+  flex-direction: column;
+}

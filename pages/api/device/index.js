@@ -63,19 +63,21 @@ handler.patch(
             photo = image.secure_url;
         }
 
-        const { name, energy, _id } = req.body;
+        const { name, energy, photoUrl, _id } = req.body;
         console.log('_id', _id)
 
         const updateData = {
             "name": name,
             "energy": energy,
-            "photo": photo
+            "photo": photo,
+            "photoUrl": photoUrl
         }
 
         const device = await updateDeviceById(req.db, _id, {
             ...(name && { name }),
             ...(energy && { energy }),
-            ...(photo && { photo })
+            ...(photo && { photo }),
+            ...(photoUrl && { photoUrl })
         });
 
         res.json({ device })

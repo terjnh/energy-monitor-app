@@ -84,7 +84,7 @@ const Device = ({ device, className }) => {
     };
 
 
-    
+
 
     return (
         <div className={clsx(styles.root, className)}>
@@ -131,9 +131,7 @@ const Device = ({ device, className }) => {
                                 onClose={handleClose}
                                 closeAfterTransition
                                 BackdropComponent={Backdrop}
-                                BackdropProps={{
-                                    timeout: 500,
-                                }}
+                                BackdropProps={{ timeout: 500, }}
                             >
                                 <Fade in={open}>
                                     <Box sx={style}>

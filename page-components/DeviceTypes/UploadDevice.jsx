@@ -9,13 +9,17 @@ import Input from '@mui/material/Input';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import styles from './UploadDevice.module.css';
+import Stack from '@mui/material/Stack';
+import Divider from '@mui/material/Divider';
 
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
+import * as constants from '@/page-components/constants';
 
-const s3BucketUrl = "https://hellocdkstack-myfirstbucketb8884501-1teu86nqr4njm.s3.ap-southeast-1.amazonaws.com/"
+
+// const s3BucketUrl = "https://hellocdkstack-myfirstbucketb8884501-1teu86nqr4njm.s3.ap-southeast-1.amazonaws.com/"
 
 const DeviceCard = (device) => {
     const selectedDevice = device.device
@@ -38,10 +42,10 @@ const DeviceCard = (device) => {
         <Card sx={{ maxWidth: 275 }} >
             <CardMedia
                 component="img"
-                height="140"
-                image={`${s3BucketUrl + selectedDevice.Key}`}
+                height="150"
+                image={`${constants.S3_BUCKET_URL + selectedDevice.Key}`}
                 // image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
-                alt={`${s3BucketUrl + selectedDevice.Key}`}
+                alt={`${constants.S3_BUCKET_URL + selectedDevice.Key}`}
             />
             <CardContent style={{ backgroundColor: "gray" }}>
                 <Typography gutterBottom variant="h5" component="div">
@@ -71,8 +75,6 @@ const UploadDevice = () => {
     const [imgFormData, setImgFormData] = useState(null);
     const [currentFileName, setCurrentFileName] = useState('');
     const [devicesArray, setDevicesArray] = useState([])
-
-    // const s3BucketUrl = "https://hellocdkstack-myfirstbucketb8884501-1teu86nqr4njm.s3.ap-southeast-1.amazonaws.com/"
 
     const uploadPhoto = async (e) => {
         const file = e.target.files[0];
@@ -155,21 +157,20 @@ const UploadDevice = () => {
             </Box>
 
             <Spacer size={2} axis="vertical" />
-            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 11 }}>
+            <Stack
+                direction="row"
+                divider={<Divider orientation="vertical" flexItem />}
+                spacing={2}
+            >
                 {devicesArray.map((device) => (
                     <div>
-                        <Grid item xs={10}>
+                        {/* <Grid item xs={14}> */}
                             <DeviceCard device={device} />
-                        </Grid>
-                        {/* <p>{device.Key}</p>
-                        <img
-                            src={`${s3BucketUrl + device.Key}`}
-                            alt="image unable to load"
-                        /> */}
+                        {/* </Grid> */}
                     </div>
                 ))
                 }
-            </Grid>
+            </Stack>
         </Wrapper >
     )
 }

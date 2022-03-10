@@ -28,6 +28,7 @@
     "@emotion/styled": "^11.8.1",
     "@lukeed/ms": "^2.0.0",
     "@mui/material": "^5.4.3",
+    "@mui/styles": "^5.5.0",
     "ajv": "^8.10.0",
     "aws-sdk": "^2.1088.0",
     "bcryptjs": "^2.4.3",

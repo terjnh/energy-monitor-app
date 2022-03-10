@@ -1,6 +1,7 @@
 ### Update:
-- 8 Mar 2022:
-    - Beautified /device-types
+- 10 Mar 2022:
+    - Update device picture based on options available in S3 bucket '/devices'
+        - selection of picture from modal
 
 ## Dependencies
 - `ajv` - validates request body (JSON)
