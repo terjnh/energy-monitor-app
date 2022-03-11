@@ -60,9 +60,9 @@ const DeviceCard = (device) => {
                     ${lastModDT.getHours()}:${lastModDT.getMinutes()}:${lastModDT.getSeconds()}`}
                 </Typography>
             </CardContent>
-            <CardActions>
+            {/* <CardActions>
                 <Button variant="contained" size="small">ToDo</Button>
-            </CardActions>
+            </CardActions> */}
         </Card>
     );
 }

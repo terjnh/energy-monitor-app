@@ -1,7 +1,7 @@
 ### Update:
-- 10 Mar 2022:
-    - Update device picture based on options available in S3 bucket '/devices'
-        - selection of picture from modal
+- 11 Mar 2022:
+    - Changed LinearProgress to CircularProgress in device_photo_selection
+    - Re-arranged edit-device page to a cleaner layout
 
 ## Dependencies
 - `ajv` - validates request body (JSON)
@@ -48,9 +48,7 @@ This example uses [`createPresignedPost`](https://docs.aws.amazon.com/AWSJavaScr
 - ACCESS_KEY, SECRET_KEY, REGION, and BUCKET_NAME belong to AWS
 
 
-### TODO:
-- Delete photo from Cloudinary if not in use
 
 
-## Description
+##### Description
 Referenced from: https://github.com/hoangvvo/nextjs-mongodb-app

@@ -22,7 +22,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
-import LinearProgress from '@mui/material/LinearProgress';
+import CircularProgress from '@mui/material/CircularProgress';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -85,7 +85,7 @@ export default function UserDevicePage({ device }) {
 
     useEffect(() => {
         nameRef.current.value = device.name;
-        devicePictureRef.current.value = '';
+        devicePicture2Ref.current.value = '';
         setAvatarHref(device.photo)
     }, [device])
 
@@ -114,10 +114,10 @@ export default function UserDevicePage({ device }) {
                 formData.append('name', nameRef.current.value);
                 formData.append('energy', energyRef.current.value);
                 // console.log('devicePicture2Ref:', devicePicture2Ref.current.style.backgroundImage)
-                if (devicePictureRef.current.files[0]) {
-                    // console.log('devicePictureRef.current.files[0]:', devicePictureRef.current.files[0])
-                    formData.append('photo', devicePictureRef.current.files[0])
-                }
+                // if (devicePictureRef.current.files[0]) {
+                //     // console.log('devicePictureRef.current.files[0]:', devicePictureRef.current.files[0])
+                //     formData.append('photo', devicePictureRef.current.files[0])
+                // }
                 if (devicePicture2Ref.current) {
                     // Slice url
                     const photoUrl = devicePicture2Ref.current.style.backgroundImage
@@ -184,7 +184,9 @@ export default function UserDevicePage({ device }) {
                             >
                                 <Grid container rowSpacing={1} columnSpacing={1}>
                                     {isLoadingPhotos
-                                        ? <LinearProgress />
+                                        ? <Box sx={{ml: 20, mt: 6, mb: 6}}>
+                                            <CircularProgress />
+                                            </Box>
                                         : s3DevicesArray.map((device) => (
                                             <>
                                                 <Grid item xs={3}>
@@ -234,7 +236,7 @@ export default function UserDevicePage({ device }) {
 
     return (
         <>
-            <Box ml={6} mt={6}>
+            {/* <Box ml={6} mt={6}>
                 <div className={styles.avatar}>
                     <Button style={buttonStyle.imageContainer}
                         // className={styles.buttonStep}
@@ -244,7 +246,7 @@ export default function UserDevicePage({ device }) {
                         }}
                     />
                 </div>
-            </Box>
+            </Box> */}
 
             <Center py={6}>
                 <Box
@@ -255,7 +257,7 @@ export default function UserDevicePage({ device }) {
                     rounded={'md'}
                     overflow={'hidden'}>
 
-                    <Box p={6}><Flex justify={'center'} mt={10}>
+                    <Box p={6}><Flex justify={'center'} mt={0}>
                         <FormControlLabel
                             control={
                                 <Switch checked={switchState} onChange={handleChange} name="switch" />
@@ -265,7 +267,7 @@ export default function UserDevicePage({ device }) {
                         /></Flex>
                     </Box>
 
-                    <Stack spacing={0} align={'center'} mb={5}>
+                    <Stack spacing={0} align={'center'} mb={2}>
                         <Heading fontSize={'xl'} fontWeight={400} fontFamily={'body'}>
                             Selected Device:
                         </Heading>
@@ -287,7 +289,14 @@ export default function UserDevicePage({ device }) {
                             <Spacer size={0.5} axis="vertical" />
                             <div className={styles.avatar}>
                                 <Spacer size={2.5} axis="vertical" />
-                                <Avatar
+                                <Button style={buttonStyle.imageContainer}
+                                    // className={styles.buttonStep}
+                                    ref={devicePicture2Ref}
+                                    onClick={() => {
+                                        onOpenPhotoModal();
+                                    }}
+                                />
+                                {/* <Avatar
                                     size={150}
                                     url={avatarHref ? avatarHref : '/images/addImage.png'}
                                 />
@@ -297,11 +306,11 @@ export default function UserDevicePage({ device }) {
                                     accept="image/*"
                                     ref={devicePictureRef}
                                     onChange={onDevicePictureChange}
-                                />
+                                /> */}
                             </div>
 
                         </Flex>
-                        <Spacer size={5} axis="vertical" />
+                        <Spacer size={3} axis="vertical" />
                         <Box p={6}>
                             <Stack spacing={-10} align={'center'} mb={1}>
                                 <Text color={'gray.500'}>Added by: <b>{device.creator.username}</b></Text>
@@ -309,7 +318,6 @@ export default function UserDevicePage({ device }) {
                             </Stack>
                         </Box>
 
-                        <Spacer size={0.5} axis="vertical" />
                         <Input ref={nameRef} label="Device name" />
                         <Spacer size={0.5} axis="vertical" />
                         <Input ref={energyRef} label="Add Energy (Watts)" />
