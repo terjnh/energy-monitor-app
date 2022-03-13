@@ -1,7 +1,6 @@
 ### Update:
-- 11 Mar 2022:
-    - Changed LinearProgress to CircularProgress in device_photo_selection
-    - Re-arranged edit-device page to a cleaner layout
+- 13 Mar 2022:
+    - Added loading states to certain button clicks
 
 ## Dependencies
 - `ajv` - validates request body (JSON)

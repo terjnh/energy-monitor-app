@@ -1,4 +1,5 @@
 import { Spacer } from '@/components/Layout';
+import { LoadingDots } from '@/components/LoadingDots';
 import { fetcher } from "@/lib/fetch";
 import { useCurrentUser } from '@/lib/user';
 import {
@@ -60,7 +61,7 @@ const Device = ({ device, className }) => {
         },
     }));
 
-
+    const [isEditing, setIsEditing] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const onDelete = async () => {
         // console.log('onDelete-id:', id)
@@ -115,8 +116,13 @@ const Device = ({ device, className }) => {
                                 href={`/user/${device.creator.username}/device/${device._id}`}
                                 passHref
                             >
-                                <Button color="primary" variant="contained">
-                                    Edit
+                                <Button
+                                    color="primary"
+                                    variant="contained"
+                                    onClick={() => {
+                                        setIsEditing(true);
+                                    }}>
+                                    Edit {isEditing ? <LoadingDots> </LoadingDots> : null}
                                 </Button>
                             </Link>
                             <Spacer axis="horizontal" size={0.2} />
