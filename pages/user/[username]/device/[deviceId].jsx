@@ -38,7 +38,7 @@ import { borderRadius } from "@mui/system";
 
 
 export default function UserDevicePage({ device }) {
-    console.log('UserDevicePage, device:', device);
+    // console.log('UserDevicePage, device:', device);
     const { data, error, mutate } = useCurrentUser();
 
     const [isLoading, setIsLoading] = useState(false);
@@ -52,11 +52,53 @@ export default function UserDevicePage({ device }) {
 
     const router = useRouter();
 
+
+    // Modal - on/off switch
+    const [openOnOffModal, setOpenOnOffModal] = useState(false);
+    const [isUpdatingOnOff, setIsUpdatingOnOff] = useState(false);
+    const onCloseOnOffModal = () => {
+        // switchState ? setSwitchState(false) : setSwitchState(true)
+        setOpenOnOffModal(false);
+    }
+    const onOpenOnOffModal = () => setOpenOnOffModal(true);
+
     // Toggle Switch
-    const [switchState, setSwitchState] = useState(false);
-    const handleChange = (event) => {
-        switchState ? setSwitchState(false) : setSwitchState(true);
+    const [switchState, setSwitchState] = useState(device.switchState);
+    const handleChange = () => {
+        switchState ? setSwitchState(false) : setSwitchState(true)
+        onCloseOnOffModal();
     };
+    useEffect(() => {
+        console.log('useEffect -switchState:', switchState)
+        async function editSwitchState(_id, switchState) {
+            const response = await fetcher('/api/device/switch-state', {
+                method: 'PATCH',
+                headers: { "Content-type": "application/json" },
+                body: JSON.stringify({
+                    _id: _id,
+                    switchState: switchState
+                })
+            });
+        }
+        // TODO: switchstate changes, enable loading state, update MongoDB
+        // Update MongoDB key-value for device
+        try {
+            setIsUpdatingOnOff(true);
+            // console.log('isUpdatingOnOff:', isUpdatingOnOff)
+            // const formData = new FormData();
+            // formData.append('_id', device._id);
+            // formData.append('switchState', switchState)
+
+            editSwitchState(device._id, switchState);
+            toast.success("Success")
+        } catch (e) {
+            toast.error(e.message);
+        } finally {
+            setIsUpdatingOnOff(false);
+            // console.log('isUpdatingOnOff:', isUpdatingOnOff)
+        }
+    }, [switchState])
+
 
     // Modal - select photo
     const [openPhotoModal, setOpenPhotoModal] = useState(false);
@@ -81,6 +123,8 @@ export default function UserDevicePage({ device }) {
     const handlePhotoSelected = (event) => {
         setPhotoSelected(event.target.value);
     };
+
+
 
 
     useEffect(() => {
@@ -142,6 +186,11 @@ export default function UserDevicePage({ device }) {
         }, [mutate]
     );
 
+
+
+
+
+    ///// MODALS /////
     const photoModalStyle = {
         position: 'absolute',
         top: '50%',
@@ -155,8 +204,6 @@ export default function UserDevicePage({ device }) {
         p: 4,
         borderRadius: 2
     };
-
-
     const PhotoModal = () => {
         return (
             <Modal
@@ -184,9 +231,9 @@ export default function UserDevicePage({ device }) {
                             >
                                 <Grid container rowSpacing={1} columnSpacing={1}>
                                     {isLoadingPhotos
-                                        ? <Box sx={{ml: 20, mt: 6, mb: 6}}>
+                                        ? <Box sx={{ ml: 20, mt: 6, mb: 6 }}>
                                             <CircularProgress />
-                                            </Box>
+                                        </Box>
                                         : s3DevicesArray.map((device) => (
                                             <>
                                                 <Grid item xs={3}>
@@ -224,6 +271,62 @@ export default function UserDevicePage({ device }) {
         )
     }
 
+    const onOffModalStyle = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 350,
+        height: 180,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+        borderRadius: 2
+    };
+    const OnOffSwitchModal = () => {
+        return (
+            <Modal
+                open={openOnOffModal}
+                onClose={onCloseOnOffModal}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{ timeout: 500, }}
+            >
+                <Fade in={openOnOffModal}>
+                    <Box sx={onOffModalStyle}>
+                        <Typography id="transition-modal-title" color="#4B4B4B" variant="h6" component="h2">
+                            Switch the device?
+                        </Typography>
+                        <Spacer size={0.5} axis="vertical" />
+                        <Box>
+                            <Button sx={{ mt: 3, ml: 16 }}
+                                variant="contained"
+                                color="error"
+                                onClick={() => {
+                                    onCloseOnOffModal()
+                                }}
+                            >
+                                No</Button>
+                            <Button sx={{ mt: 3, ml: 2 }} variant="contained"
+                                onClick={() => {
+                                    handleChange();
+                                }}>Yes</Button>
+                        </Box>
+                    </Box>
+                </Fade>
+
+
+            </Modal>
+        )
+    }
+
+
+
+
+
+
+
     const buttonStyle = {
         imageContainer: {
             backgroundImage: `url(${avatarHref2})`,
@@ -236,18 +339,6 @@ export default function UserDevicePage({ device }) {
 
     return (
         <>
-            {/* <Box ml={6} mt={6}>
-                <div className={styles.avatar}>
-                    <Button style={buttonStyle.imageContainer}
-                        // className={styles.buttonStep}
-                        ref={devicePicture2Ref}
-                        onClick={() => {
-                            onOpenPhotoModal();
-                        }}
-                    />
-                </div>
-            </Box> */}
-
             <Center py={6}>
                 <Box
                     maxW={'800px'}
@@ -257,14 +348,23 @@ export default function UserDevicePage({ device }) {
                     rounded={'md'}
                     overflow={'hidden'}>
 
-                    <Box p={6}><Flex justify={'center'} mt={0}>
-                        <FormControlLabel
-                            control={
-                                <Switch checked={switchState} onChange={handleChange} name="switch" />
-                            }
-                            label={switchState ?
-                                <b>Switch OFF</b> : <b>Switch ON</b>}
-                        /></Flex>
+                    <Box p={4}>
+                        <Flex justify={'center'} mt={0} mb={-20}>
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        sx={{ mt: -0.75, mr: 1 }}
+                                        checked={switchState}
+                                        onChange={() => {
+                                            onOpenOnOffModal();
+                                        }}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                        name="switch" />
+                                }
+                                label={switchState ?
+                                    <Typography variant='h5'><b>ON</b></Typography>
+                                    : <Typography variant='h5'><b>OFF</b></Typography>}
+                            /></Flex>
                     </Box>
 
                     <Stack spacing={0} align={'center'} mb={2}>
@@ -296,17 +396,6 @@ export default function UserDevicePage({ device }) {
                                         onOpenPhotoModal();
                                     }}
                                 />
-                                {/* <Avatar
-                                    size={150}
-                                    url={avatarHref ? avatarHref : '/images/addImage.png'}
-                                />
-                                <input
-                                    aria-label="Device Avatar"
-                                    type="file"
-                                    accept="image/*"
-                                    ref={devicePictureRef}
-                                    onChange={onDevicePictureChange}
-                                /> */}
                             </div>
 
                         </Flex>
@@ -329,12 +418,14 @@ export default function UserDevicePage({ device }) {
                         >
                             Save
                         </button>
+                        <Spacer size={2} axis="vertical" />
                     </form>
 
                 </Box>
             </Center>
 
             <PhotoModal />
+            <OnOffSwitchModal />
         </>
     )
 }

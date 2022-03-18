@@ -1,6 +1,7 @@
 ### Update:
-- 13 Mar 2022:
-    - Added loading states to certain button clicks
+- 19 Mar 2022:
+    - Persistent state management for Device ON/OFF
+    - fetch handling written through: 'pages/api/device/switch-state/'
 
 ## Dependencies
 - `ajv` - validates request body (JSON)

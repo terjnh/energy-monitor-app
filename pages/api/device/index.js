@@ -48,7 +48,6 @@ handler.patch(
         additionalProperties: true,
     }),
     async (req, res) => {
-        console.log('req.body(patch):', req.body)
         if (!req.user) {
             req.status(401).end();
             return;
@@ -64,19 +63,20 @@ handler.patch(
         }
 
         const { name, energy, photoUrl, _id } = req.body;
-        console.log('_id', _id)
+        console.log('req.body:', req.body)
+        // console.log('req.body(typeof):', typeof(req.body))
 
         const updateData = {
             "name": name,
             "energy": energy,
-            "photo": photo,
+            // "photo": photo,
             "photoUrl": photoUrl
         }
 
         const device = await updateDeviceById(req.db, _id, {
             ...(name && { name }),
             ...(energy && { energy }),
-            ...(photo && { photo }),
+            // ...(photo && { photo }),
             ...(photoUrl && { photoUrl })
         });
 

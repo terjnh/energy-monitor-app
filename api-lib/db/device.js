@@ -39,6 +39,21 @@ export async function updateDeviceById(db, id, data) {
   // .then(({ value }) => value);
 }
 
+export async function updateDeviceSwitchStateById(db, id, switchState) {
+  // console.log('updateDeviceSwitchStateById-switchState:', switchState)
+  return db
+  .collection(DEVICES)
+  .findOneAndUpdate(
+    { "_id": ObjectId(id) },
+    {
+      $set: {
+        "switchState": switchState,
+      }
+    },
+    { returnDocument: 'after' }
+  )
+}
+
 export async function deleteDeviceById(db, { deviceId }) {
   console.log('deleteDeviceById, deviceId:', deviceId)
   return db

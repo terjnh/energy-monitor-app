@@ -20,6 +20,7 @@ export const ValidateDeviceProps = {
     name: { type: 'string', minLength: 2, maxLength: 20 },
     energy: { type: 'string', minLength: 0, maxLength: 3 },
     deviceId: { type: 'string', minLength: 0, maxLength: 1000 },
+    switchState: {type: 'string', minLength: 0, maxLength: 10 }
   }
 }
 
